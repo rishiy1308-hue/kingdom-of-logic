@@ -1,0 +1,16 @@
+{
+  "appId": "com.kingdomoflogic.game",
+  "appName": "Kingdom of Logic",
+  "webDir": "www",
+  "backgroundColor": "#0a1d2b",
+  "android": {
+    "backgroundColor": "#0a1d2b"
+  },
+  "plugins": {
+    "SystemBars": {
+      "style": "DARK",
+      "insetsHandling": "css",
+      "initialViewportFitValueHint": "cover"
+    }
+  }
+}

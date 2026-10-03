@@ -1,0 +1,68 @@
+name: Build Android APK
+
+# Runs whenever you push to the repository, and whenever you press "Run workflow" on the Actions tab.
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: build-apk
+  cancel-in-progress: true
+
+permissions:
+  contents: write   # lets the last step publish the APK as a downloadable Release
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - name: Install tools
+        run: npm ci
+
+      - name: Create the Android project (theme, icon, game files)
+        run: bash tools/prepare_android.sh
+
+      - name: Build the APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Name the file
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk KingdomOfLogic.apk
+
+      # Download it from the run page (inside a .zip) ...
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KingdomOfLogic-apk
+          path: KingdomOfLogic.apk
+          if-no-files-found: error
+
+      # ... or, easier on a phone: open the repository's "Releases" page and tap KingdomOfLogic.apk
+      - name: Publish as a Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest KingdomOfLogic.apk \
+            --target "${{ github.sha }}" \
+            --title "Kingdom of Logic for Android" \
+            --notes "Tap KingdomOfLogic.apk on your phone to download it, then open the file to install. Built from commit ${{ github.sha }}."

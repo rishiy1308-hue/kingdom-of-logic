@@ -1,0 +1,19 @@
+{
+  "name": "kingdom-of-logic",
+  "version": "1.0.0",
+  "description": "Kingdom of Logic: a discrete-mathematics adventure for ages 10 to 15 (Android app wrapper)",
+  "scripts": {
+    "android:prepare": "bash tools/prepare_android.sh",
+    "android:apk": "cd android && ./gradlew assembleDebug"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5"
+  },
+  "private": true
+}
