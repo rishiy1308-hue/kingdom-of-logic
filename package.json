@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Kingdom of Logic: a discrete-mathematics adventure for ages 10 to 15 (Android app wrapper)",
   "scripts": {
-    "android:prepare": "bash tools/prepare_android.sh",
+    "android:prepare": "bash prepare_android.sh",
     "android:apk": "cd android && ./gradlew assembleDebug"
   },
   "license": "UNLICENSED",
