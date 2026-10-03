@@ -38,7 +38,7 @@ jobs:
         run: npm ci
 
       - name: Create the Android project (theme, icon, game files)
-        run: bash tools/prepare_android.sh
+        run: bash prepare_android.sh
 
       - name: Build the APK
         working-directory: android
